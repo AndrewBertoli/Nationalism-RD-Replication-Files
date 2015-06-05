@@ -9,7 +9,7 @@ require(rdrobust)
 require(gdata)
 
 
-# You can also get the functions BalancePlot(), Permutation.Test(), and RDPlot() from my Github page.
+# You can also get the functions BalancePlot(), PermutationTest(), and RDPlot() from my GitHub page.
  
 
 data=read.xls("WorldCupData.xls",sheet=1,header=TRUE)
@@ -113,7 +113,7 @@ coeftest(model,model$newse)
 
 # Permutation Inference (with mean as test statistic)
 
-Permutation.Test(t$AGGAfter-t$AGGBefore, c$AGGAfter-c$AGGBefore, Paired=TRUE)
+PermutationTest(t$AGGAfter-t$AGGBefore, c$AGGAfter-c$AGGBefore, Paired=TRUE)
 
 # t-test on Post-Treatment outcome alone (not Difference-in-Differences)
 
