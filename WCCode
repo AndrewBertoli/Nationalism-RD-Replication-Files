@@ -32,8 +32,8 @@ dev.off()
 # Time Series
 
 pdf("MIDComparison.pdf")
-tAGG=apply(t[,12:31], 2, sum)
-cAGG=apply(c[,12:31], 2, sum)
+tAGG=apply(t[,11:30], 2, sum)
+cAGG=apply(c[,11:30], 2, sum)
 Year=seq(-5.5,4,by=0.5)
 tsdata=data.frame(c(Year,Year),c(tAGG,cAGG),c(rep(1,20),rep(0,20)))
 colnames(tsdata)=c("Year","Aggression","Treat")
