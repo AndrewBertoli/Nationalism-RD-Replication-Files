@@ -1,4 +1,4 @@
-# World Cup Replication Code
+# Replication Code
 
 This code is for the paper "Nationalism and Interstate Conflict: A Regression Discontinuity Analysis." 
 
