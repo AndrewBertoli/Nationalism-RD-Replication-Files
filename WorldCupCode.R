@@ -10,6 +10,7 @@ require(sandwich)
 require(ggplot2)
 require(rdrobust)
 require(RCurl)
+require(devtools)
 
 # We begin by reading in the data, which includes all countries that were the last out or first in to the World Cup
 
@@ -26,7 +27,7 @@ t=sample[which(sample$Treat==1),]
 
 # We can now read in the functions that will make the figures from the paper. These include BalancePlot(), RDPlot(), and PermutationTest()
 
-source("WorldCupFunctions.R")
+source_url("https://raw.githubusercontent.com/AndrewBertoli/World-Cup-Code/master/WorldCupFunctions.R")
 
 
 
