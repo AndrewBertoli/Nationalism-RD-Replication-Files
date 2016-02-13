@@ -34,7 +34,15 @@ source_url("https://raw.githubusercontent.com/AndrewBertoli/World-Cup-Code/maste
 # Figure 1-Balance Plot
 
 pdf("BalancePlot.pdf", width = 7, height = 5)
-BalancePlot(Data=sample, Treat=sample$Treat, Title="Figure 1. Balance Between the Qualifiers and Non-qualifiers", Covariates=c('Tpop','Upop','Imports','Exports','CINC','Democracy','EngagedCivilWar','EndedCivilWar','EntranceYear','BirthRate','InfantMortality','LifeExpectancy','MedianAge','Alliances','USAlly','SoccerMostPopular','PrevAppear','AGGYearBefore','AGG3YearsBefore','AGG5YearsBefore'), Names.To.Print=c('Total Population', 'Urban Population', 'Imports', 'Exports', 'Material Power Score', 'Level of Democracy', 'Engaged in Civil War', 'Resolved Civil War', 'Year of State Formation', 'Birth Rate', 'Infant Mortality','Life Expectancy', 'Median Age', "Number of Alliances", "U.S. Ally", "Soccer Most Popular Sport", 'Appearance at Previous World Cup',  'MIDs Initiated in the Year Before', 'MIDs Initiated in the 3 Years Before', 'MIDs Initiated in the 5 Years Before'), Shade.Color= "cadetblue2", Built.In.Tests=c("T.Test"), Point.Color= "black", Year.Covariates=c("EntranceYear"),Paired=TRUE,na.rm=TRUE)
+BalancePlot(Data=sample, Treat=sample$Treat, Title="Figure 1. Balance Between the Qualifiers and Non-qualifiers", 
+Covariates=c('Tpop','Upop','Imports','Exports','CINC','Democracy','EngagedCivilWar','EndedCivilWar','EntranceYear',
+'BirthRate','InfantMortality','LifeExpectancy','MedianAge','Alliances','USAlly','SoccerMostPopular','PrevAppear',
+'AGGYearBefore','AGG3YearsBefore','AGG5YearsBefore'), Names.To.Print=c('Total Population', 'Urban Population',
+'Imports', 'Exports', 'Material Power Score', 'Level of Democracy', 'Engaged in Civil War', 'Resolved Civil War', 
+'Year of State Formation', 'Birth Rate', 'Infant Mortality','Life Expectancy', 'Median Age', "Number of Alliances", 
+"U.S. Ally", "Soccer Most Popular Sport", 'Appearance at Previous World Cup',  'MIDs Initiated in the Year Before', 
+'MIDs Initiated in the 3 Years Before', 'MIDs Initiated in the 5 Years Before'), Shade.Color= "cadetblue2", 
+Built.In.Tests=c("T.Test"), Point.Color= "black", Year.Covariates=c("EntranceYear"),Paired=TRUE,na.rm=TRUE)
 dev.off()
 
 
@@ -42,13 +50,22 @@ dev.off()
 # Figure 2-Time Series
 
 pdf("MIDComparison.pdf")
-tAGG=apply(t[,12:31], 2, sum)
-cAGG=apply(c[,12:31], 2, sum)
-Year=seq(-5.5,4,by=0.5)
+tAGG=apply(t[,11:31], 2, sum)
+cAGG=apply(c[,11:31], 2, sum)
+Year=seq(-5.5,4.5,by=0.5)
 tsdata=data.frame(c(Year,Year),c(tAGG,cAGG),c(rep(1,20),rep(0,20)))
 colnames(tsdata)=c("Year","Aggression","Treat")
 tsdata=data.frame(Year, tAGG, cAGG)
-ggplot(tsdata, aes(x=Year)) + geom_line(aes(y=tAGG), colour="Blue", show_guide=TRUE) + geom_line(aes(y=cAGG) , colour="gray67", show_guide=TRUE) + geom_hline(yintercept=0) + geom_vline(xintercept=-0.5, linetype=2) + geom_vline(xintercept=0, linetype=2) + annotate("text", x=-0.68, y=12.2, angle=90, label="Qualification", size=4.2) + scale_x_continuous(breaks = c(-5.5,-4.5,-3.5,-2.5,-1.5,1,2,3,4), labels = c(-5,-4,-3,-2,-1,1,2,3,4)) + annotate("text", x=-0.2, y=12.2, angle=90, label="World Cup", size=4.2) + labs(title="Figure 2. Comparing Aggression Before and After the World Cup") + ylab("Militarized Interstate Disputes Initiated") + xlab("Years Since Qualification and the World Cup") + theme_bw() + geom_rect(aes(xmin = -5.4, xmax = -3.1, ymin = 13.37, ymax = 14.9),fill="white",colour="black") + annotate("text", x = c(-5.15, -5.15, -4.4, -4.1), y = c(14.88, 14.19, 14.5, 13.8), label = c("_", "_", "Qualifiers", "Non-qualifiers"), colour=c("Blue", "gray67", "black", "black"), size=c(8, 8, 4, 4)) + theme(plot.title = element_text(lineheight=.8, face="bold",size=14.7),axis.title=element_text(size=13.7),axis.text=element_text(size=11.7))
+ggplot(tsdata, aes(x=Year)) + geom_line(aes(y=tAGG), colour="Blue", show_guide=TRUE) + geom_line(aes(y=cAGG) ,
+colour="gray67", show_guide=TRUE) + geom_hline(yintercept=0) + geom_vline(xintercept=-0.5, linetype=2) + 
+geom_vline(xintercept=0, linetype=2) + annotate("text", x=-0.68, y=12.2, angle=90, label="Qualification", size=4.2) + 
+scale_x_continuous(breaks = c(-5.5,-4.5,-3.5,-2.5,-1.5,1,2,3,4), labels = c(-5,-4,-3,-2,-1,1,2,3,4)) + 
+annotate("text", x=-0.2, y=12.2, angle=90, label="World Cup", size=4.2) + ylab("Militarized Interstate Disputes Initiated") +
+xlab("Years Since Qualification and the World Cup") + theme_bw() + geom_rect(aes(xmin = -5.4, xmax = -3.1, ymin = 13.37, 
+ymax = 14.9),fill="white",colour="black") + annotate("text", x = c(-5.15, -5.15, -4.4, -4.1), y = c(14.88, 14.19, 14.5, 13.8), 
+label = c("_", "_", "Qualifiers", "Non-qualifiers"), colour=c("Blue", "gray67", "black", "black"), size=c(8, 8, 4, 4)) + 
+theme(plot.title = element_text(lineheight=.8, face="bold",size=14.7),axis.title=element_text(size=13.7),
+axis.text=element_text(size=11.7))
 dev.off()
 
 
@@ -110,7 +127,10 @@ t.test(AGGAfter-AGGBefore~Treat,sample[sample$PointsFromCutpoint!=0,],paired=TRU
 
 # Linear Regression with Robust Standard Errors
 
-model=lm(AGGAfter - AGGBefore ~ Treat + LandArea + Irst + Milper + Milex+ Energy +Tpop + Upop + CINC + Democracy + EngagedCivilWar + EndedCivilWar + PrevAppear + GreatPower + Alliances + USAlly + EntranceYear + Imports + Exports + MedianAge + LifeExpectancy + InfantMortality + SexRatio + DeathRate + BirthRate + SoccerMostPopular, sample)
+model=lm(AGGAfter - AGGBefore ~ Treat + LandArea + Irst + Milper + Milex+ Energy +Tpop + Upop + CINC + 
+Democracy + EngagedCivilWar + EndedCivilWar + PrevAppear + GreatPower + Alliances + USAlly + EntranceYear + 
+Imports + Exports + MedianAge + LifeExpectancy + InfantMortality + SexRatio + DeathRate + BirthRate + 
+SoccerMostPopular, sample)
 
 model$newse<-vcovHC(model,type="HC1")
 coeftest(model,model$newse)
@@ -169,15 +189,21 @@ op=par(mfrow=c(1,3), mar=c(4,4.5,3,0),oma=c(0,1,2,1))
 
 bw=rdbwselect(no.window$AGGBefore,no.window$PointsFromCutpoint,bwselect="IK")[[3]][1]
 
-RDPlot(X=no.window$PointsFromCutpoint,Y=no.window$AGGBefore,xlim=c(-3.6,3.6),ylim=c(-1.5,1.5), Main="Aggression Before", xlab="Points Above/Below Cut-Point",ylab="Militarized Interstate Disputes Initiated",Kernel="Triangular",Bandwidth=bw, Window=c(-2.5,2.5),NBoots=10000,cex.main=1.8,cex.lab=1.5)
+RDPlot(X=no.window$PointsFromCutpoint,Y=no.window$AGGBefore,xlim=c(-3.6,3.6),ylim=c(-1.5,1.5), Main="Aggression Before", 
+xlab="Points Above/Below Cut-Point",ylab="Militarized Interstate Disputes Initiated",Kernel="Triangular",Bandwidth=bw, 
+Window=c(-2.5,2.5),NBoots=10000,cex.main=1.8,cex.lab=1.5)
 
 bw=rdbwselect(no.window$AGGAfter,no.window$PointsFromCutpoint,bwselect="IK")[[3]][1]
 
-RDPlot(X=no.window$PointsFromCutpoint,Y=no.window$AGGAfter,xlim=c(-3.6,3.6),ylim=c(-1.5,1.5), Main="Aggression After",xlab="Points Above/Below Cut-Point", ylab="",Kernel="Triangular", Bandwidth=bw, Window=c(-2.5,2.5),NBoots=10000,cex.main=1.8,cex.lab=1.5,yaxt='n')
+RDPlot(X=no.window$PointsFromCutpoint,Y=no.window$AGGAfter,xlim=c(-3.6,3.6),ylim=c(-1.5,1.5), Main="Aggression After",
+xlab="Points Above/Below Cut-Point", ylab="",Kernel="Triangular", Bandwidth=bw, Window=c(-2.5,2.5),NBoots=10000,cex.main=1.8,
+cex.lab=1.5,yaxt='n')
 
 bw=rdbwselect(no.window$AGGAfter-no.window$AGGBefore,no.window$PointsFromCutpoint,bwselect="IK")[[3]][1]
 
-RDPlot(X=no.window$PointsFromCutpoint,Y=no.window$AGGAfter-no.window$AGGBefore,xlim=c(-3.6,3.6),ylim=c(-1.5,1.5), Main="Change in Aggression", xlab="Points Above/Below Cut-Point", ylab="", Kernel="Triangular", Bandwidth=bw, Window=c(-2.5,2.5),NBoots=10000,cex.main=1.8,cex.lab=1.5,yaxt='n')
+RDPlot(X=no.window$PointsFromCutpoint,Y=no.window$AGGAfter-no.window$AGGBefore,xlim=c(-3.6,3.6),ylim=c(-1.5,1.5), 
+Main="Change in Aggression", xlab="Points Above/Below Cut-Point", ylab="", Kernel="Triangular", Bandwidth=bw, 
+Window=c(-2.5,2.5),NBoots=10000,cex.main=1.8,cex.lab=1.5,yaxt='n')
 
 title("Figure 3. Change in Aggression for the World Cup",outer=TRUE,cex.main=2.5)
 
@@ -199,21 +225,34 @@ Other_Disputes=mean(dyads$Disputes[dyads$Played==0]>0)
 Other_PrevDisputes=mean(dyads$PreviousDisputes[dyads$Played==0]>0)
 
 pdf("WCDyadsGraph.pdf",height=4.2, width=7)
-ggplot() + geom_line(aes(y=c(Played_PrevDisputes,Played_Disputes),x=c(0,1)), colour="Blue", show_guide=TRUE) + geom_line(aes(y=c(Other_PrevDisputes,Other_Disputes),x=c(0,1)) , colour="gray44", show_guide=TRUE) + scale_x_continuous(breaks = c(0,1), labels = c("Two Years Before","Two Years After"),limits=c(-0.07,1.07)) + scale_y_continuous(breaks = c(0.37,0.38,0.39,.4,.41,.42,.43), labels = c("37%","38%","39%","40%","41%","42%","43%"), limits=c(0.37,0.43)) + labs(title="Figure 4: Conflict Between Countries That Played at the World Cup") + xlab("Time Period") + ylab("Probability of Military Dispute")+ theme_bw() + theme(plot.title = element_text(lineheight=.8, face="bold",size=15,hjust=.97),axis.title = element_text(size=14),axis.text = element_text(size=11.5))+annotate("text", x=0.52, y=0.408, angle=22.4, label="Participants That Played Each Other",color="blue", size=5)+ annotate("text", x=0.6, y=0.38402, angle=-8.1, label="Participants That Did Not Play Each Other",color="gray44", size=5) + annotate("text", x=1, y=0.4281, label="0.424*",color="black", size=4.5)+ annotate("text", x=1, y=0.3728, label="0.376",color="black", size=4.5) + annotate("text", x=0, y=0.393, label="0.390",color="black", size=4.5)+ annotate("text", x=0, y=0.3812, label="0.384",color="black", size=4.5)
+ggplot() + geom_line(aes(y=c(Played_PrevDisputes,Played_Disputes),x=c(0,1)), colour="Blue", show_guide=TRUE) + 
+geom_line(aes(y=c(Other_PrevDisputes,Other_Disputes),x=c(0,1)) , colour="gray44", show_guide=TRUE) + 
+scale_x_continuous(breaks = c(0,1), labels = c("Two Years Before","Two Years After"),limits=c(-0.07,1.07)) + 
+scale_y_continuous(breaks = c(0.37,0.38,0.39,.4,.41,.42,.43), labels = c("37%","38%","39%","40%","41%","42%","43%"), 
+limits=c(0.37,0.43)) + labs(title="Figure 4: Conflict Between Countries That Played at the World Cup") + xlab("Time Period") 
++ ylab("Probability of Military Dispute")+ theme_bw() + theme(plot.title = element_text(lineheight=.8, face="bold",size=15,
+hjust=.97),axis.title = element_text(size=14),axis.text = element_text(size=11.5))+annotate("text", x=0.52, y=0.408, angle=22.4,
+label="Participants That Played Each Other",color="blue", size=5)+ annotate("text", x=0.6, y=0.38402, angle=-8.1, 
+label="Participants That Did Not Play Each Other",color="gray44", size=5) + annotate("text", x=1, y=0.4281, label="0.424*",
+color="black", size=4.5)+ annotate("text", x=1, y=0.3728, label="0.376",color="black", size=4.5) + annotate("text", x=0, 
+y=0.393, label="0.390",color="black", size=4.5)+ annotate("text", x=0, y=0.3812, label="0.384",color="black", size=4.5)
 dev.off()
 
 
 
 # Changes in Military Participation and Military Expenditures
 
-# Since we have data on the total population size of countries, we can calculate the percentage of the population that participated in the military the year before and the year after the World Cup. We can then do a difference-in-differences t-test.  
+# Since we have data on the total population size of countries, we can calculate the percentage of the population 
+# that participated in the military the year before and the year after the World Cup. We can then do a difference-in-differences 
+# t-test.  
 
 t.test(MilperPercentAfter-Milper/Tpop>0~Treat,sample)
 
 t.test(MilperPercentAfter-Milper/Tpop>0~Treat,sample,paired=TRUE)$p.value
 
 
-# Since we don't have reliable GDP data, we can't do the same test for military expenditures. So I just look at the percentage that military expenditures increased between the year before and year after the World Cup.
+# Since we don't have reliable GDP data, we can't do the same test for military expenditures. So I just look at the 
+# percentage that military expenditures increased between the year before and year after the World Cup.
 
 t.test(MilexAfter/Milex~Treat,sample[sample$Milex>0,])
 
@@ -226,21 +265,54 @@ t.test(MilexAfter/Milex~Treat,sample[sample$Milex>0,])
 # Expanded Blance Plot
 
 pdf("BalancePlotExpanded.pdf", width = 7, height = 8)
-BalancePlot(Data=sample, Treat=sample$Treat, Title="Figure 1a. Balance Between the Qualifiers and Non-qualifiers", Covariates=c("Irst",'Milex','Milper','Tpop','Upop','BirthRate','DeathRate','InfantMortality','Energy','Imports','Exports','LandArea','CINC','Democracy','GreatPower','EngagedCivilWar','EndedCivilWar','EntranceYear','SexRatio','LifeExpectancy','MedianAge','Alliances','USAlly','SoccerMostPopular','PrevAppear','AGGYearBefore','AGG3YearsBefore','AGG5YearsBefore'), Names.To.Print=c('Iron and Steel Production', 'Military Expenditures', 'Military Personnel', 'Total Population', 'Urban Population', 'Birth Rate', 'Death Rate', 'Infant Mortality', 'Energy Production', 'Imports', 'Exports', 'Land Area', 'Material Power Score', 'Level of Democracy', 'Great Power Status', 'Engaged in Civil War', 'Resolved Civil War', 'Year of State Formation', 'Sex Ratio', 'Life Expectancy', 'Median Age', "Number of Alliances", "U.S. Ally", "Soccer Most Popular Sport", 'Appearance at Previous World Cup',  'MIDs Initiated in the Year Before', 'MIDs Initiated in the 3 Years Before', 'MIDs Initiated in the 5 Years Before'), Shade.Color= "cadetblue2", Built.In.Tests=c("T.Test"), Point.Color= "black", Year.Covariates=c("EntranceYear"),Paired=TRUE,na.rm=TRUE)
+BalancePlot(Data=sample, Treat=sample$Treat, Title="Figure 1a. Balance Between the Qualifiers and Non-qualifiers", 
+Covariates=c("Irst",'Milex','Milper','Tpop','Upop','BirthRate','DeathRate','InfantMortality','Energy','Imports',
+'Exports','LandArea','CINC','Democracy','GreatPower','EngagedCivilWar','EndedCivilWar','EntranceYear','SexRatio',
+'LifeExpectancy','MedianAge','Alliances','USAlly','SoccerMostPopular','PrevAppear','AGGYearBefore','AGG3YearsBefore',
+'AGG5YearsBefore'), Names.To.Print=c('Iron and Steel Production', 'Military Expenditures', 'Military Personnel', 
+'Total Population', 'Urban Population', 'Birth Rate', 'Death Rate', 'Infant Mortality', 'Energy Production', 
+'Imports', 'Exports', 'Land Area', 'Material Power Score', 'Level of Democracy', 'Great Power Status', 'Engaged in Civil War', 
+'Resolved Civil War', 'Year of State Formation', 'Sex Ratio', 'Life Expectancy', 'Median Age', "Number of Alliances", 
+"U.S. Ally", "Soccer Most Popular Sport", 'Appearance at Previous World Cup',  'MIDs Initiated in the Year Before', 
+'MIDs Initiated in the 3 Years Before', 'MIDs Initiated in the 5 Years Before'), Shade.Color= "cadetblue2", 
+Built.In.Tests=c("T.Test"), Point.Color= "black", Year.Covariates=c("EntranceYear"),Paired=TRUE,na.rm=TRUE)
 dev.off()
 
 
 # Balance Plot-No Great Powers
 
 pdf("BalancePlotNoGP.pdf", width = 7, height = 8)
-BalancePlot(Data= sample[sample$GreatPower==0,], Treat= sample[sample$GreatPower==0, ]$Treat, Title="Figure 2a. Balance After Dropping the U.S. and Soviet Union", Covariates= c("Irst", 'Milex','Milper', 'Tpop','Upop', 'BirthRate','DeathRate', 'InfantMortality','Energy','Imports','Exports','LandArea','CINC','Democracy','GreatPower','EngagedCivilWar','EndedCivilWar','EntranceYear','SexRatio','LifeExpectancy','MedianAge','Alliances','USAlly','SoccerMostPopular','PrevAppear','AGGYearBefore','AGG3YearsBefore','AGG5YearsBefore'), Names.To.Print=c('Iron and Steel Production','Military Expenditures', 'Military Personnel', 'Total Population', 'Urban Population', 'Birth Rate', 'Death Rate', 'Infant Mortality', 'Energy Production', 'Imports', 'Exports', 'Land Area', 'Material Power Score', 'Level of Democracy', 'Great Power Status', 'Engaged in Civil War', 'Resolved Civil War', 'Year of State Formation', 'Sex Ratio', 'Life Expectancy', 'Median Age', "Number of Alliances", "U.S. Ally", "Soccer Most Popular Sport", 'Appearance at Previous World Cup',  'MIDs Initiated in the Year Before', 'MIDs Initiated in the 3 Years Before', 'MIDs Initiated in the 5 Years Before'), Shade.Color="cadetblue2", Built.In.Tests= c("T.Test"), Point.Color="black", Year.Covariates= c("EntranceYear"), Paired=FALSE)
+BalancePlot(Data= sample[sample$GreatPower==0,], Treat= sample[sample$GreatPower==0, ]$Treat, 
+Title="Figure 2a. Balance After Dropping the U.S. and Soviet Union", 
+Covariates= c("Irst", 'Milex','Milper', 'Tpop','Upop', 'BirthRate','DeathRate', 'InfantMortality',
+'Energy','Imports','Exports','LandArea','CINC','Democracy','GreatPower','EngagedCivilWar','EndedCivilWar',
+'EntranceYear','SexRatio','LifeExpectancy','MedianAge','Alliances','USAlly','SoccerMostPopular',
+'PrevAppear','AGGYearBefore','AGG3YearsBefore','AGG5YearsBefore'), Names.To.Print=c('Iron and Steel Production',
+'Military Expenditures', 'Military Personnel', 'Total Population', 'Urban Population', 'Birth Rate', 'Death Rate', 
+'Infant Mortality', 'Energy Production', 'Imports', 'Exports', 'Land Area', 'Material Power Score', 
+'Level of Democracy', 'Great Power Status', 'Engaged in Civil War', 'Resolved Civil War', 'Year of State Formation', 
+'Sex Ratio', 'Life Expectancy', 'Median Age', "Number of Alliances", "U.S. Ally", "Soccer Most Popular Sport", 
+'Appearance at Previous World Cup',  'MIDs Initiated in the Year Before', 'MIDs Initiated in the 3 Years Before', 
+'MIDs Initiated in the 5 Years Before'), Shade.Color="cadetblue2", Built.In.Tests= c("T.Test"), Point.Color="black", 
+Year.Covariates= c("EntranceYear"), Paired=FALSE)
 dev.off()
 
 
 # Balance Plot for 1 point sample
 
 pdf("BalancePlot1Point.pdf", width = 7, height = 8)
-BalancePlot(Data= sample[abs(sample$PointsFromCutpoint)<=1, ], Treat= sample[abs(sample$PointsFromCutpoint)<=1, ]$Treat, Title="Figure 3a. Balance for the One-Point Window", Covariates= c("Irst",'Milex','Milper','Tpop','Upop','BirthRate','DeathRate','InfantMortality','Energy','Imports','Exports','LandArea','CINC','Democracy','GreatPower','EngagedCivilWar','EndedCivilWar','EntranceYear','SexRatio','LifeExpectancy','MedianAge','Alliances','USAlly','SoccerMostPopular','PrevAppear','AGGYearBefore','AGG3YearsBefore','AGG5YearsBefore'), Names.To.Print=c('Iron and Steel Production','Military Expenditures', 'Military Personnel', 'Total Population', 'Urban Population', 'Birth Rate', 'Death Rate', 'Infant Mortality', 'Energy Production', 'Imports', 'Exports', 'Land Area', 'Material Power Score', 'Level of Democracy', 'Great Power Status', 'Engaged in Civil War', 'Resolved Civil War', 'Year of State Formation', 'Sex Ratio', 'Life Expectancy', 'Median Age', "Number of Alliances", "U.S. Ally", "Soccer Most Popular Sport", 'Appearance at Previous World Cup',  'MIDs Initiated in the Year Before', 'MIDs Initiated in the 3 Years Before', 'MIDs Initiated in the 5 Years Before'), Shade.Color="cadetblue2", Built.In.Tests= c("T.Test"), Point.Color="black", Year.Covariates= c("EntranceYear"), Paired=TRUE,na.rm=TRUE)
+BalancePlot(Data= sample[abs(sample$PointsFromCutpoint)<=1, ], Treat= sample[abs(sample$PointsFromCutpoint)<=1, ]$Treat, 
+Title="Figure 3a. Balance for the One-Point Window", Covariates= c("Irst",'Milex','Milper','Tpop','Upop','BirthRate',
+'DeathRate','InfantMortality','Energy','Imports','Exports','LandArea','CINC','Democracy','GreatPower','EngagedCivilWar',
+'EndedCivilWar','EntranceYear','SexRatio','LifeExpectancy','MedianAge','Alliances','USAlly','SoccerMostPopular','PrevAppear',
+'AGGYearBefore','AGG3YearsBefore','AGG5YearsBefore'), Names.To.Print=c('Iron and Steel Production','Military Expenditures', 
+'Military Personnel', 'Total Population', 'Urban Population', 'Birth Rate', 'Death Rate', 'Infant Mortality', 
+'Energy Production', 'Imports', 'Exports', 'Land Area', 'Material Power Score', 'Level of Democracy', 'Great Power Status', 
+'Engaged in Civil War', 'Resolved Civil War', 'Year of State Formation', 'Sex Ratio', 'Life Expectancy', 'Median Age', 
+"Number of Alliances", "U.S. Ally", "Soccer Most Popular Sport", 'Appearance at Previous World Cup',  
+'MIDs Initiated in the Year Before', 'MIDs Initiated in the 3 Years Before', 'MIDs Initiated in the 5 Years Before'), 
+Shade.Color="cadetblue2", Built.In.Tests= c("T.Test"), Point.Color="black", Year.Covariates= c("EntranceYear"), 
+Paired=TRUE,na.rm=TRUE)
 dev.off()
 
 
@@ -256,7 +328,8 @@ coeftest(model,model$newse)
 
 # Military Controls
 
-model=lm(AGGAfter - AGGBefore ~ Treat + LandArea + Irst + Milper + Milex+ Energy + Tpop + Upop + CINC + EngagedCivilWar + EndedCivilWar + GreatPower + Alliances + USAlly, sample)
+model=lm(AGGAfter - AGGBefore ~ Treat + LandArea + Irst + Milper + Milex+ Energy + Tpop + Upop + CINC + 
+EngagedCivilWar + EndedCivilWar + GreatPower + Alliances + USAlly, sample)
 
 model$newse<-vcovHC(model,type="HC1")
 coeftest(model,model$newse)
@@ -265,7 +338,8 @@ coeftest(model,model$newse)
 
 # Military and Economic Controls
 
-model=lm(AGGAfter - AGGBefore ~ Treat + LandArea + Irst + Milper + Milex + Energy + Tpop + Upop + CINC + EngagedCivilWar + EndedCivilWar + EntranceYear + GreatPower + Alliances + USAlly + Imports + Exports, sample)
+model=lm(AGGAfter - AGGBefore ~ Treat + LandArea + Irst + Milper + Milex + Energy + Tpop + Upop + CINC + 
+EngagedCivilWar + EndedCivilWar + EntranceYear + GreatPower + Alliances + USAlly + Imports + Exports, sample)
 
 model$newse<-vcovHC(model,type="HC1")
 coeftest(model,model$newse)
@@ -273,7 +347,10 @@ coeftest(model,model$newse)
 
 # Military, Economic, and Demographic Controls
 
-model=lm(AGGAfter - AGGBefore ~ Treat + LandArea + Irst + Milper + Milex+ Energy +Tpop + Upop + CINC + Democracy + EngagedCivilWar + EndedCivilWar + PrevAppear + GreatPower + Alliances + USAlly + EntranceYear + Imports + Exports + MedianAge + LifeExpectancy + InfantMortality + SexRatio + DeathRate + BirthRate + SoccerMostPopular, sample)
+model=lm(AGGAfter - AGGBefore ~ Treat + LandArea + Irst + Milper + Milex+ Energy +Tpop + Upop + CINC + 
+Democracy + EngagedCivilWar + EndedCivilWar + PrevAppear + GreatPower + Alliances + USAlly + EntranceYear + 
+Imports + Exports + MedianAge + LifeExpectancy + InfantMortality + SexRatio + DeathRate + BirthRate + 
+SoccerMostPopular, sample)
 
 model$newse<-vcovHC(model,type="HC1")
 coeftest(model,model$newse)
@@ -293,7 +370,8 @@ coeftest(model,model$newse)
 
 # Military Controls
 
-model=lm(AGGAfter ~ Treat + AGGBefore + LandArea + Irst + Milper + Milex+ Energy + Tpop + Upop + CINC + EngagedCivilWar + EndedCivilWar + GreatPower + Alliances + USAlly, sample)
+model=lm(AGGAfter ~ Treat + AGGBefore + LandArea + Irst + Milper + Milex+ Energy + Tpop + Upop + CINC + EngagedCivilWar 
++ EndedCivilWar + GreatPower + Alliances + USAlly, sample)
 
 model$newse<-vcovHC(model,type="HC1")
 coeftest(model,model$newse)
@@ -302,7 +380,8 @@ coeftest(model,model$newse)
 
 # Military and Economic Controls
 
-model=lm(AGGAfter ~ Treat + AGGBefore + LandArea + Irst + Milper + Milex + Energy + Tpop + Upop + CINC + EngagedCivilWar + EndedCivilWar + EntranceYear + GreatPower + Alliances + USAlly + Imports + Exports, sample)
+model=lm(AGGAfter ~ Treat + AGGBefore + LandArea + Irst + Milper + Milex + Energy + Tpop + Upop + CINC + EngagedCivilWar + 
+EndedCivilWar + EntranceYear + GreatPower + Alliances + USAlly + Imports + Exports, sample)
 
 model$newse<-vcovHC(model,type="HC1")
 coeftest(model,model$newse)
@@ -310,7 +389,9 @@ coeftest(model,model$newse)
 
 # Military, Economic, and Demographic Controls
 
-model=lm(AGGAfter ~ Treat + AGGBefore + LandArea + Irst + Milper + Milex+ Energy +Tpop + Upop + CINC + Democracy + EngagedCivilWar + EndedCivilWar + PrevAppear + GreatPower + Alliances + USAlly + EntranceYear + Imports + Exports + MedianAge + LifeExpectancy + InfantMortality + SexRatio + DeathRate + BirthRate + SoccerMostPopular, sample)
+model=lm(AGGAfter ~ Treat + AGGBefore + LandArea + Irst + Milper + Milex+ Energy +Tpop + Upop + CINC + Democracy + 
+EngagedCivilWar + EndedCivilWar + PrevAppear + GreatPower + Alliances + USAlly + EntranceYear + Imports + Exports + 
+MedianAge + LifeExpectancy + InfantMortality + SexRatio + DeathRate + BirthRate + SoccerMostPopular, sample)
 
 model$newse<-vcovHC(model,type="HC1")
 coeftest(model,model$newse)
@@ -400,7 +481,12 @@ estimatevector[i]=t.test(newt$AGGAfter- newt$AGGBefore,newc$AGGAfter- newc$AGGBe
 pvalues[i]= t.test(newt$AGGAfter- newt$AGGBefore,newc$AGGAfter- newc$AGGBefore,paired=TRUE)$p.value
 ns[i]=dim(newt)[1]}
 pdf("SUTVA.pdf",height=4,width=7)
-ggplot()+geom_histogram(aes(x=estimatevector),origin=-0.1,binwidth=0.02,fill="cornflowerblue")+xlab("Estimate")+ylab("Frequency")+ xlim(-0.22,0.7)+ geom_vline(xintercept=mean(t$AGGAfter-t$AGGBefore-(c$AGGAfter-c$AGGBefore)),col="black") + geom_vline(xintercept=mean(estimatevector),col="red") + theme_bw() + geom_rect(aes(xmin = -0.2, xmax = 0.18, ymin = 70, ymax = 85),fill="white",colour="black")+ annotate("text", x = c(-0.17, -0.17, -0.005, 0.0028), y = c(85.1, 79.3, 81, 75), label = c("_", "_", "Average of the Estimates", "Estimate from Full Sample"), colour=c("red", "black", "black", "black"), size=c(8, 8, 4, 4)) + theme(axis.title=element_text(size=13.7),axis.text=element_text(size=11.7))
+ggplot()+geom_histogram(aes(x=estimatevector),origin=-0.1,binwidth=0.02,fill="cornflowerblue")+xlab("Estimate")+ylab("Frequency")+ 
+xlim(-0.22,0.7)+ geom_vline(xintercept=mean(t$AGGAfter-t$AGGBefore-(c$AGGAfter-c$AGGBefore)),col="black") + 
+geom_vline(xintercept=mean(estimatevector),col="red") + theme_bw() + geom_rect(aes(xmin = -0.2, xmax = 0.18, ymin = 70, 
+ymax = 85),fill="white",colour="black")+ annotate("text", x = c(-0.17, -0.17, -0.005, 0.0028), y = c(85.1, 79.3, 81, 75), 
+label = c("_", "_", "Average of the Estimates", "Estimate from Full Sample"), colour=c("red", "black", "black", "black"), 
+size=c(8, 8, 4, 4)) + theme(axis.title=element_text(size=13.7),axis.text=element_text(size=11.7))
 dev.off()
 
  
@@ -415,7 +501,10 @@ max(ns)
 # Performance of Qualifiers at the World Cup
 
 pdf("WCRankings.pdf", height=4.3)
-ggplot(data=t,aes(x=(t$Rank-1)/(t$NumberOfParticipants-1)))+xlab("Rank")+ylab("Frequency")+labs(title="Figure 5a. Rankings of the Qualifiers at the World Cup",size=2.5)+geom_density(adjust=0.25,fill="cornflowerblue") + scale_x_continuous(limits=c(0,1),breaks = c(0.0,1), labels = c("First Place","Last Place"))+ theme_bw() + theme(axis.title=element_text(size=13.7),axis.text=element_text(size=10.7))
+ggplot(data=t,aes(x=(t$Rank-1)/(t$NumberOfParticipants-1)))+xlab("Rank")+ylab("Frequency")+
+labs(title="Figure 5a. Rankings of the Qualifiers at the World Cup",size=2.5)+geom_density(adjust=0.25,fill="cornflowerblue") 
++ scale_x_continuous(limits=c(0,1),breaks = c(0.0,1), labels = c("First Place","Last Place"))+ theme_bw() + 
+theme(axis.title=element_text(size=13.7),axis.text=element_text(size=10.7))
 dev.off()
 
 
@@ -423,7 +512,8 @@ dev.off()
 
 # These treatment effects were taken from the papers listed in Section 1.8 of the online appendix
 
-names=c("Revolution","Arms Transfer","Neutrality Pact","Offensive Alliance","    Leader from Rebel Group","Leader Backed By Military","World Cup","Autocratic Regime Change","Leader from Military")
+names=c("Revolution","Arms Transfer","Neutrality Pact","Offensive Alliance","    Leader from Rebel Group",
+"Leader Backed By Military","World Cup","Autocratic Regime Change","Leader from Military")
 
 treatment.effects=c(74.29,59.6,57,47,43,41,33.3,24,18.5)
 position=1:length(treatment.effects)
@@ -431,7 +521,12 @@ position=1:length(treatment.effects)
 teffects=data.frame(position,treatment.effects)
 
 pdf("TEComp.pdf")
-ggplot(teffects[-7,], aes(position, treatment.effects)) + geom_point()  + theme_bw() + scale_x_continuous(breaks = position, labels = names) + xlab("Variable") + ylab("Increase in Probability of Dispute\nInitiation (from Baseline)") + scale_y_continuous(breaks = seq(0,100,by=20), labels = c("0%","20%","40%","60%","80%","100%"),limits=c(0,105))+geom_hline(yintercept=0)+ labs(title="Figure 6a. Comparing the Effect of the World\nCup to Other Estimated Treatment Effects")+ theme(plot.title = element_text(lineheight=.8, face="bold",size=18), axis.text.x  = element_text(angle=90, vjust=0.5, hjust=1, size=12), axis.title= element_text(size=13, face="bold"))+geom_point(data=subset(teffects,treatment.effects==33.3),colour="red")
+ggplot(teffects[-7,], aes(position, treatment.effects)) + geom_point()  + theme_bw() + scale_x_continuous(breaks = position, 
+labels = names) + xlab("Variable") + ylab("Increase in Probability of Dispute\nInitiation (from Baseline)") + 
+scale_y_continuous(breaks = seq(0,100,by=20), labels = c("0%","20%","40%","60%","80%","100%"),limits=c(0,105))+
+geom_hline(yintercept=0)+ labs(title="Figure 6a. Comparing the Effect of the World\nCup to Other Estimated Treatment Effects")+ 
+theme(plot.title = element_text(lineheight=.8, face="bold",size=18), axis.text.x  = element_text(angle=90, vjust=0.5, hjust=1, 
+size=12), axis.title= element_text(size=13, face="bold"))+geom_point(data=subset(teffects,treatment.effects==33.3),colour="red")
 
 dev.off()
 
