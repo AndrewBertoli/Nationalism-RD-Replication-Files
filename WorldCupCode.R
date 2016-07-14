@@ -213,30 +213,30 @@ dev.off()
 
 # Conflicts between countries that played against each other
 
-dyads=read.csv("https://raw.githubusercontent.com/AndrewBertoli/Nationalism-RD-Replication-Files/master/Dyads.csv",stringsAsFactors=FALSE)
+dyads=read.csv("https://raw.githubusercontent.com/AndrewBertoli/Nationalism-RD-Replication-Files/master/WorldCupDyads.csv",stringsAsFactors=FALSE)
 
-t.test(Disputes-PreviousDisputes~Played,dyads)
-t.test(Disputes>0~Played,dyads)
+t.test(dyads$Disputes_After,dyads$Disputes_Before,paired=TRUE)
 
-Played_Disputes=mean(dyads$Disputes[dyads$Played==1]>0)
-Played_PrevDisputes=mean(dyads$PreviousDisputes[dyads$Played==1]>0)
+sum(dyads$Disputes_Before)
+sum(dyads$Disputes_After)
 
-Other_Disputes=mean(dyads$Disputes[dyads$Played==0]>0)
-Other_PrevDisputes=mean(dyads$PreviousDisputes[dyads$Played==0]>0)
+sum(dyads$Disputes_Before>0)
+sum(dyads$Disputes_After>0)
 
-pdf("WCDyadsGraph.pdf",height=4.2, width=7)
-ggplot() + geom_line(aes(y=c(Played_PrevDisputes,Played_Disputes),x=c(0,1)), colour="Blue", show_guide=TRUE) + 
-geom_line(aes(y=c(Other_PrevDisputes,Other_Disputes),x=c(0,1)) , colour="gray44", show_guide=TRUE) + 
-scale_x_continuous(breaks = c(0,1), labels = c("Two Years Before","Two Years After"),limits=c(-0.07,1.07)) + 
-scale_y_continuous(breaks = c(0.37,0.38,0.39,.4,.41,.42,.43), labels = c("37%","38%","39%","40%","41%","42%","43%"), 
-limits=c(0.37,0.43)) + labs(title="Figure 4: Conflict Between Countries That Played at the World Cup") + xlab("Time Period") 
-+ ylab("Probability of Military Dispute")+ theme_bw() + theme(plot.title = element_text(lineheight=.8, face="bold",size=15,
-hjust=.97),axis.title = element_text(size=14),axis.text = element_text(size=11.5))+annotate("text", x=0.52, y=0.408, angle=22.4,
-label="Participants That Played Each Other",color="blue", size=5)+ annotate("text", x=0.6, y=0.38402, angle=-8.1, 
-label="Participants That Did Not Play Each Other",color="gray44", size=5) + annotate("text", x=1, y=0.4281, label="0.424*",
-color="black", size=4.5)+ annotate("text", x=1, y=0.3728, label="0.376",color="black", size=4.5) + annotate("text", x=0, 
-y=0.393, label="0.390",color="black", size=4.5)+ annotate("text", x=0, y=0.3812, label="0.384",color="black", size=4.5)
+
+pdf("WCDyadsGraph.pdf",height=4, width=7.2)
+ggplot() + geom_line(aes(y=c(sum(dyads$Disputes_Before),sum(dyads$Disputes_After)),x=c(0,1)), colour="Blue", show_guide=TRUE) +
+geom_line(aes(y=c(sum(dyads$Disputes_Before>0),sum(dyads$Disputes_After>0)),x=c(0,1)) , colour="Blue", show_guide=TRUE) + 
+scale_x_continuous(breaks = c(0,1), labels = c("Two Years Before","Two Years After"),limits=c(-0.07,1.07)) + ylim(30,60) + 
+xlab("Time Period") + ylab("")+ theme_bw() + 
+theme(plot.title = element_text(lineheight=.8, face="bold",size=15,hjust=.97),axis.title = element_text(size=14),
+axis.text = element_text(size=11.5)) + 
+annotate("text", x=0.49, y=49.2, angle=24, label="Total Militarized Interstate Dipsutes",color="Blue", size=5)+
+annotate("text", x=0.51, y=42, angle=14.8, label="Pairs with at Least One Dispute",color="blue", size=5) +
+annotate("text", x=1, y=60, label="59",color="black", size=4.5)+ annotate("text", x=1, y=45.8, label="47",color="black", size=4.5) + annotate("text", x=0, y=33, label="34",color="black", size=4.5)+ annotate("text", x=0, y=38.2, label="37",color="black", size=4.5)
 dev.off()
+
+
 
 
 
@@ -255,6 +255,22 @@ t.test(MilperPercentAfter-Milper/Tpop>0~Treat,sample,paired=TRUE)$p.value
 # percentage that military expenditures increased between the year before and year after the World Cup.
 
 t.test(MilexAfter/Milex~Treat,sample[sample$Milex>0,])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
