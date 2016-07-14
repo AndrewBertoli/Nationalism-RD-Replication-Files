@@ -213,7 +213,7 @@ dev.off()
 
 # Conflicts between countries that played against each other
 
-dyads=read.csv("Dyads.csv")
+dyads=read.csv("https://raw.githubusercontent.com/AndrewBertoli/Nationalism-RD-Replication-Files/master/Dyads.csv",stringsAsFactors=FALSE)
 
 t.test(Disputes-PreviousDisputes~Played,dyads)
 t.test(Disputes>0~Played,dyads)
