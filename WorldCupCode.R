@@ -246,15 +246,6 @@ dev.off()
 disp=read.csv("MIDB_4.0.csv",stringsAsFactors=FALSE)
 
 Year=c(1930,1934,1938,1950,1954,1958,1962,1966,1970,1974,1978,1982,1986,1990,1994,1998,2002,2006,2010)
-
-for(i in 1:length(Year)){
-index1=disp[c(which(disp$StYear>Year[i]-1&disp$StYear<Year[i]+1),which(disp$StYear==Year[i]-2&disp$StMon>=6),
-which(disp$StYear==Year[i]+2&disp$StMon<6)),]$DispNum3			
-index2=disp[disp$StAbb%in%c(data[data$Year==Year[i],]$Country1,data[data$Year==Year[i],]$Country2),]$DispNum3		
-disputes_with_wc_part=c(disputes_with_wc_part,intersect(index1,index2))}
-
-disp=disp[-which(disp$DispNum3%in%disputes_with_wc_part),]
-
 Month=6
 Day=1
 
