@@ -215,6 +215,8 @@ dev.off()
 
 dyads=read.csv("https://raw.githubusercontent.com/AndrewBertoli/Nationalism-RD-Replication-Files/master/WorldCupDyads.csv",stringsAsFactors=FALSE)
 
+
+
 t.test(dyads$Disputes_After,dyads$Disputes_Before,paired=TRUE)
 
 sum(dyads$Disputes_Before)
@@ -236,6 +238,51 @@ annotate("text", x=0.51, y=42, angle=14.8, label="Pairs with at Least One Disput
 annotate("text", x=1, y=60, label="59",color="black", size=4.5)+ annotate("text", x=1, y=45.8, label="47",color="black", size=4.5) + annotate("text", x=0, y=33, label="34",color="black", size=4.5)+ annotate("text", x=0, y=38.2, label="37",color="black", size=4.5)
 dev.off()
 
+
+# Tracking the total number of all other disputes over this period
+
+# You can download the correlates of war data from http://www.correlatesofwar.org/data-sets/MIDs
+
+disp=read.csv("MIDB_4.0.csv",stringsAsFactors=FALSE)
+
+Year=c(1930,1934,1938,1950,1954,1958,1962,1966,1970,1974,1978,1982,1986,1990,1994,1998,2002,2006,2010)
+
+for(i in 1:length(Year)){
+index1=disp[c(which(disp$StYear>Year[i]-1&disp$StYear<Year[i]+1),which(disp$StYear==Year[i]-2&disp$StMon>=6),
+which(disp$StYear==Year[i]+2&disp$StMon<6)),]$DispNum3			
+index2=disp[disp$StAbb%in%c(data[data$Year==Year[i],]$Country1,data[data$Year==Year[i],]$Country2),]$DispNum3		
+disputes_with_wc_part=c(disputes_with_wc_part,intersect(index1,index2))}
+
+disp=disp[-which(disp$DispNum3%in%disputes_with_wc_part),]
+
+Month=6
+Day=1
+
+allprevdisp=disp[c(
+	which(disp$StYear%in%Year&disp$StMon==Month&disp$StDay<=Day),
+	which(disp$StYear%in%Year&disp$StMon<Month),
+	which(disp$StYear%in%(Year-1)),
+	which(disp$StYear%in%(Year-2)&disp$StMon>Month),
+	which(disp$StYear%in%(Year-2)&disp$StMon==Month&disp$StDay>Day)	
+	),]		
+	
+num_all_prev=length(unique(allprevdisp$DispNum3))
+num_all_prev-sum(dyads$Disputes_Before) # Subtracts off disputes that involved the countries that played at the World Cup
+
+alldisp=disp[c(
+	which(disp$StYear%in%Year&disp$StMon==Month&disp$StDay>Day),
+	which(disp$StYear%in%Year&disp$StMon>=Month),
+	which(disp$StYear%in%(Year+1)),
+	which(disp$StYear%in%(Year+2)&disp$StMon<Month),
+	which(disp$StYear%in%(Year+2)&disp$StMon==Month&disp$StDay<Day)	
+	),]		
+
+num_all=length(unique(alldisp$DispNum3))
+num_all-sum(dyads$Disputes_After) # Subtracts off disputes that involved the countries that played at the World Cup
+
+# Calculating the % change
+
+num_all-sum(dyads$Disputes_After))/(num_all_prev-sum(dyads$Disputes_Before))-1
 
 
 
