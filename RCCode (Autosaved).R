@@ -254,8 +254,8 @@ qualifiers=qualifiers[qualifiers$Score>=5,]
 
 # I set the ties at 0.0001 and -0.0001, instead of counting both the winners and losers as 0.  
 
-nonqualifiers[nonqualifiers$PointsFromCutpoint==0,]$PointsFromCutpoint=-0.0001
-qualifiers[qualifiers$PointsFromCutpoint==0,]$PointsFromCutpoint=0.0001
+nonqualifiers[nonqualifiers$PointsFromCutpoint==0,]$PointsFromCutpoint=-0.01
+qualifiers[qualifiers$PointsFromCutpoint==0,]$PointsFromCutpoint=0.01
 
 sample=rbind(qualifiers,nonqualifiers)
 
@@ -266,11 +266,11 @@ pdf("ContinuityGraphsRC.pdf", height=4.5, width=9)
 
 op=par(mfrow=c(1,3), mar=c(4,3.9,3,0),oma=c(0,0,2,0))
 
-RDPlot(X=sample$PointsFromCutpoint,Y=sample$AGG3YearsBefore,xlim=c(-3.7,3.7),ylim=c(-1.5,1.5), Main="3 Years Before Qualification", xlab="Points Above/Below Cut-Point",ylab="Militarized Interstate Disputes Initiated",Bandwidth=2.85621, Shade.Color="blanchedalmond", Window=c(-2.5,2.5), NBoots=100000 , Breaks=c(-11.5,-10.5,-9.5,-8.5,-7.5,-6.5,-5.5,-4.5,-3.5,-2.5,-1.5,-0.5,0,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5))
+RDPlot(X=sample$PointsFromCutpoint,Y=sample$AGG3YearsBefore,xlim=c(-3.7,3.7),ylim=c(-1.5,1.5), Main="3 Years Before Qualification", xlab="Points Above/Below Cut-Point",ylab="Militarized Interstate Disputes Initiated",Bandwidth=11,Kernel="Triangular",Smoother="Local Linear", Shade.Color="blanchedalmond", Window=c(-2.5,2.5), NBoots=10000 , Breaks=c(-11.5,-10.5,-9.5,-8.5,-7.5,-6.5,-5.5,-4.5,-3.5,-2.5,-1.5,-0.5,0,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5))
 
-RDPlot(X=sample$PointsFromCutpoint,Y=sample$AGG3YearsAfter,xlim=c(-3.7,3.7),ylim=c(-1.5,1.5), Main="3 Years After Qualification",xlab="Points Above/Below Cut-Point",ylab="",Bandwidth=3.2316, Shade.Color="blanchedalmond", Window=c(-2.5,2.5) , NBoots=100000 , Breaks=c(-11.5,-10.5,-9.5,-8.5,-7.5,-6.5,-5.5,-4.5,-3.5,-2.5,-1.5,-0.5,0,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5))
+RDPlot(X=sample$PointsFromCutpoint,Y=sample$AGG3YearsAfter,xlim=c(-3.7,3.7),ylim=c(-1.5,1.5), Main="3 Years After Qualification",xlab="Points Above/Below Cut-Point",ylab="",Bandwidth=11,Kernel="Triangular",Smoother="Local Linear", Shade.Color="blanchedalmond", Window=c(-2.5,2.5) , NBoots=10000 , Breaks=c(-11.5,-10.5,-9.5,-8.5,-7.5,-6.5,-5.5,-4.5,-3.5,-2.5,-1.5,-0.5,0,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5))
 
-RDPlot(X=sample$PointsFromCutpoint,Y=sample$AGG3YearsAfter-sample$AGG3YearsBefore,xlim=c(-3.7,3.7),ylim=c(-1.5,1.5), Main="Change in Aggression", xlab="Points Above/Below Cut-Point",ylab="", Bandwidth=4.1937, Shade.Color="blanchedalmond", Window=c(-2.5,2.5), NBoots=100000 , Breaks=c(-11.5,-10.5,-9.5,-8.5,-7.5,-6.5,-5.5,-4.5,-3.5,-2.5,-1.5,-0.5,0,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5))
+RDPlot(X=sample$PointsFromCutpoint,Y=sample$AGG3YearsAfter-sample$AGG3YearsBefore,xlim=c(-3.7,3.7),ylim=c(-1.5,1.5), Main="Change in Aggression", xlab="Points Above/Below Cut-Point",ylab="", Bandwidth=11,Kernel="Triangular",Smoother="Local Linear", Shade.Color="blanchedalmond", Window=c(-2.5,2.5), NBoots=10000 , Breaks=c(-11.5,-10.5,-9.5,-8.5,-7.5,-6.5,-5.5,-4.5,-3.5,-2.5,-1.5,-0.5,0,0.5,1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5,10.5,11.5,12.5))
 
 title("Figure 8a. Change in Aggression for the Regional Championships",outer=TRUE,cex.main=2)
 
