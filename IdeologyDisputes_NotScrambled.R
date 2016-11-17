@@ -25,11 +25,11 @@ Austria 1965   				None
 Austria 1974   				None
 Colombia 1978  				3120 (L,I), 2323 (H,R)
 Portugal 1986   			None
-Cyprus 1988   				2761 (H), 4038 (H)
+*Cyprus 1988   				2761 (H), 4038 (H)
 Colombia 1994   			None
 Costa Rica 1994   			4146 (H,I)
 South Korea 1997   			4125, (L,I,R), 4284 (H,R)
 Taiwan 2000   				4281 (L), 4444 (L,I,R), 4461 (L,I,R), 4462 (L,I,R)
-South Korea 2002   			4468 (L), 4473 (H), 4476 (L,I)
+*South Korea 2002   			4468 (L), 4473 (H), 4476 (L,I)
 Taiwan 2004   				4469 (L,I,R), 4470 (L,I,R)
 Finland 2006   				None

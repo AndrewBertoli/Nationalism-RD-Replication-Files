@@ -178,8 +178,8 @@ t.test(AttackAGGAfter-AttackAGGBefore~Treat,sample,paired=TRUE)
 
 # I set the ties at 0.0001 and -0.0001, instead of counting both the winners and losers as 0.  
 
-no.window[no.window$PointsFromCutpoint==0&no.window$Treat==0,]$PointsFromCutpoint=-0.1
-no.window[no.window$PointsFromCutpoint==0&no.window$Treat==1,]$PointsFromCutpoint=0.1
+no.window[no.window$PointsFromCutpoint==0&no.window$Treat==0,]$PointsFromCutpoint=-0.01
+no.window[no.window$PointsFromCutpoint==0&no.window$Treat==1,]$PointsFromCutpoint=0.01
 
 # Because the score is highly discrete, the normal bandwidth procedures do not work on this data. I set the bandwidths at 4, although the results are significant for any bandwidth greater than or equal to 1.
 
@@ -187,22 +187,22 @@ pdf("WCCont.pdf", height=4.5, width=9.5)
 
 op=par(mfrow=c(1,3), mar=c(4,4.5,3,0),oma=c(0,1,2,1))
 
-bw=rdbwselect(no.window$AGGBefore,no.window$PointsFromCutpoint,bwselect="IK")[[3]][1]
+# bw=rdbwselect(no.window$AGGBefore,no.window$PointsFromCutpoint,bwselect="IK")[[3]][1]
 
 RDPlot(X=no.window$PointsFromCutpoint,Y=no.window$AGGBefore,xlim=c(-3.6,3.6),ylim=c(-1.5,1.5), Main="Aggression Before", 
-xlab="Points Above/Below Cut-Point",ylab="Militarized Interstate Disputes Initiated",Kernel="Triangular",Bandwidth=bw, 
+xlab="Points Above/Below Cut-Point",ylab="Militarized Interstate Disputes Initiated",Kernel="Triangular", Smoother="Local Linear",Bandwidth=10, 
 Window=c(-2.5,2.5),NBoots=10000,cex.main=1.8,cex.lab=1.5)
 
-bw=rdbwselect(no.window$AGGAfter,no.window$PointsFromCutpoint,bwselect="IK")[[3]][1]
+# bw=rdbwselect(no.window$AGGAfter,no.window$PointsFromCutpoint,bwselect="IK")[[3]][1]
 
 RDPlot(X=no.window$PointsFromCutpoint,Y=no.window$AGGAfter,xlim=c(-3.6,3.6),ylim=c(-1.5,1.5), Main="Aggression After",
-xlab="Points Above/Below Cut-Point", ylab="",Kernel="Triangular", Bandwidth=bw, Window=c(-2.5,2.5),NBoots=10000,cex.main=1.8,
+xlab="Points Above/Below Cut-Point", ylab="",Kernel="Triangular", Smoother="Local Linear", Bandwidth=10, Window=c(-2.5,2.5),NBoots=10000,cex.main=1.8,
 cex.lab=1.5,yaxt='n')
 
-bw=rdbwselect(no.window$AGGAfter-no.window$AGGBefore,no.window$PointsFromCutpoint,bwselect="IK")[[3]][1]
+# bw=rdbwselect(no.window$AGGAfter-no.window$AGGBefore,no.window$PointsFromCutpoint,bwselect="IK")[[3]][1]
 
 RDPlot(X=no.window$PointsFromCutpoint,Y=no.window$AGGAfter-no.window$AGGBefore,xlim=c(-3.6,3.6),ylim=c(-1.5,1.5), 
-Main="Change in Aggression", xlab="Points Above/Below Cut-Point", ylab="", Kernel="Triangular", Bandwidth=bw, 
+Main="Change in Aggression", xlab="Points Above/Below Cut-Point", ylab="", Kernel="Triangular", Smoother="Local Linear", Bandwidth=10, 
 Window=c(-2.5,2.5),NBoots=10000,cex.main=1.8,cex.lab=1.5,yaxt='n')
 
 title("Figure 3. Change in Aggression for the World Cup",outer=TRUE,cex.main=2.5)
