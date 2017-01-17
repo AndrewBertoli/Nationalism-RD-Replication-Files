@@ -118,10 +118,10 @@ BalancePlot=function(Data, Treat, Covariates, Names.To.Print, Shade.Color = "bla
                                                     o.c[, covs[i, 1]]))) < 10) {
                 if (Paired == FALSE) 
                     p1 = PermutationTest(o.t[, covs[i, 1]], o.c[, 
-                                                                 covs[i, 1]])
+                                                                 covs[i, 1]],Simulations=50000)
                 if (Paired == TRUE) 
                     p1 = PermutationTest(o.t[, covs[i, 1]], o.c[, 
-                                                                 covs[i, 1]], Paired = TRUE)
+                                                                 covs[i, 1]], Paired = TRUE,Simulations=50000)
                 points(pch = 18, col = Observational.Point.Color, 
                        x = p1, y = aty)
             }
@@ -136,7 +136,7 @@ BalancePlot=function(Data, Treat, Covariates, Names.To.Print, Shade.Color = "bla
                        x = p3, y = aty)
             }
         }
-        if ("KS.Test" %in% Built.In.Tests & length(o.sample) > 
+        if ("KS.Test" %in% Built.In.Tests & length(o.sample) >
                 0) {
             p4 = ks.test(o.t[, covs[i, 1]], o.c[, covs[i, 1]])$p.value
             points(pch = 17, col = Observational.Point.Color, 
@@ -147,6 +147,17 @@ BalancePlot=function(Data, Treat, Covariates, Names.To.Print, Shade.Color = "bla
             points(pch = pch, col = Point.Color, 
                    x = p4, y = aty)
         }
+         if ("PermutationTest" %in% Built.In.Tests) {
+           
+                if (Paired == FALSE) 
+                    p1 = PermutationTest(t[, covs[i, 1]], c[, 
+                                                             covs[i, 1]],Simulations=50000)
+                if (Paired == TRUE) 
+                    p1 = PermutationTest(t[, covs[i, 1]], c[, 
+                                                             covs[i, 1]], Paired = TRUE,Simulations=50000)
+                points(pch = 18, col = Point.Color, x = p1, y = aty)
+            }
+
         if ("T.Test" %in% Built.In.Tests) {
             if (all(c(t[, covs[i, 1]], c[, covs[i, 1]]) %in% 
                         c(0, 1)) & sum(as.numeric(c(t[, covs[i, 1]], 
@@ -231,10 +242,24 @@ BalancePlot=function(Data, Treat, Covariates, Names.To.Print, Shade.Color = "bla
 }
 
 
+PermutationTest=function(Treatment, Control, Paired=FALSE, Simulations=500000, na.rm=FALSE, Output="p"){
 
-PermutationTest=function(Treatment, Control, Paired=FALSE, Simulations=10000, na.rm=FALSE, Output="p"){
+if(class(Treatment)=="formula"){
+Treat=as.character(Treatment)[3]
+Left=paste("+",as.character(Treatment)[2])
+Left=strsplit(Left," ")[[1]]
+plus=which(Left=="+")
+minus=which(Left=="-")
+variables_index=(1:length(Left))[-c(plus,minus)]
+outcome=0
+for(i in variables_index){
+outcome=Control[,Left[i]]*(2*as.numeric((i-1)%in%plus)-1)+outcome}
+Treatment=outcome[Control[,Treat]==1]
+Control=outcome[Control[,Treat]==0]}
 
 if(na.rm==FALSE){if(any(is.na(c(Treatment,Control)))==TRUE){return("NAs Detected. Must set na.rm=TRUE")}}
+
+
 
 if(Paired==TRUE){
 differences=Treatment-Control
@@ -261,10 +286,10 @@ pvalue=length(which(abs(new.t.stats)>=abs(mean(Treatment)-mean(Control))))/Simul
 }
 
 est=mean(Treatment)-mean(Control)
+se=sd(new.t.stats)
 if(Output=="p") return(pvalue)
 
-if(Output=="full") return(cbind(paste("Estimate=",est,colapse=""),paste("Two-tailed p-value=",pvalue,colapse="")))}
-
+if(Output=="full") return(cbind(paste("Estimate=",est,colapse=""),paste("Two-tailed p-value=",pvalue,colapse=""),paste("SE=",se,colapse="")))}
 
 
 RDPlot=function (X, Y, C = 0, xlim = range(X), ylim = "Automatic", xlab = "Forcing Variable",
