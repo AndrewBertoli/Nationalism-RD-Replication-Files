@@ -36,7 +36,7 @@ BalancePlot=function(Data, Treat, Covariates, Names.To.Print, Shade.Color = "bla
     cline = 1
     plot(x = NULL, y = NULL, xlim = c(0, 1), ylim = c(1, nrow(covs) + 
                                                           3), ylab = "", xlab = "", xaxt = "n", yaxt = "n", bty = "n")
-    mtext(text = c("Variable\nName", "Treatment\nMean", "Control\nMean"), 
+    mtext(text = c("Variable\nName", "Qualifier\nMean", "Non-qualifier\nMean"), 
           side = 2, font = 2, line = c(varline + 2, tline + 1.2, 
                                        cline + 0.53), adj = 0.5, las = 2, at = nrow(covs) + 
               1.18, cex = 0.7)
